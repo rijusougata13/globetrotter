@@ -103,7 +103,6 @@ function Game({ username, score, setScore }) {
 
   useEffect(() => {
     fetchNewDestination();
-    // Get user's invite code
     const fetchUserData = async () => {
       try {
         const user = await createOrUpdateUser(username);
