@@ -4,7 +4,6 @@ const User = require('../models/User');
 const crypto = require('crypto');
 const logger = require('../utils/logger');
 
-// Create or update user
 router.post('/', async (req, res) => {
   logger.info('Creating or updating user', { username: req.body.username });
   try {
@@ -28,7 +27,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Update user score
 router.put('/:username/score', async (req, res) => {
   logger.info('Updating user score', { username: req.params.username, score: req.body.score });
   try {
@@ -46,7 +44,6 @@ router.put('/:username/score', async (req, res) => {
   }
 });
 
-// Get user by invite code
 router.get('/invite/:code', async (req, res) => {
   logger.info('Fetching user by invite code', { inviteCode: req.params.code });
   try {

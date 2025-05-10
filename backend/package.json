@@ -8,7 +8,8 @@
     "dev": "nodemon server.js",
     "seed": "node scripts/seedData.js",
     "build": "npm install",
-    "vercel-build": "echo 'Building...'"
+    "vercel-build": "echo 'Building...'",
+    "test": "jest"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -17,6 +18,8 @@
     "mongoose": "^7.1.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
   }
 }

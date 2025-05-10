@@ -3,7 +3,6 @@ const router = express.Router();
 const Destination = require('../models/Destination');
 const logger = require('../utils/logger');
 
-// Get a random destination with clues
 router.get('/random', async (req, res) => {
   logger.info('Fetching random destination');
   try {
