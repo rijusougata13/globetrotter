@@ -55,6 +55,7 @@ function Challenge({ username, setUsername }) {
   const { inviteId } = useParams();
   const navigate = useNavigate();
   const [inviterScore, setInviterScore] = useState(null);
+  const [inviterName, setInviterName] = useState('');
   const [name, setName] = useState('');
 
   useEffect(() => {
@@ -62,6 +63,7 @@ function Challenge({ username, setUsername }) {
       try {
         const userData = await getUserByInviteCode(inviteId);
         setInviterScore(userData.score);
+        setInviterName(userData.username)
       } catch (error) {
         console.error('Error fetching inviter data:', error);
       }
@@ -91,29 +93,20 @@ function Challenge({ username, setUsername }) {
 
   return (
     <ChallengeContainer>
-      <h1>🌎 Challenge Accepted!</h1>
-      
-      {username ? (
-        <>
-          <h2>Ready to beat {username}'s score?</h2>
-          <p>They got {inviterScore?.correct} destinations correct!</p>
-          <Button onClick={() => navigate('/play')}>Start Playing</Button>
-          <ShareButton onClick={shareOnWhatsApp}>
-            Challenge More Friends on WhatsApp
-          </ShareButton>
-        </>
-      ) : (
-        <>
-          <p>Enter your name to start the challenge</p>
-          <Input
-            type="text"
-            placeholder="Enter your username"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Button onClick={handleStart}>Accept Challenge</Button>
-        </>
-      )}
+
+
+      <>
+        <h2>Ready to beat {inviterName}'s score?</h2>
+        <p>They got {inviterScore?.correct} destinations correct!</p>
+        <p>Enter your name to start the challenge</p>
+        <Input
+          type="text"
+          placeholder="Enter your username"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Button onClick={handleStart}>Accept Challenge</Button>
+      </>
     </ChallengeContainer>
   );
 }

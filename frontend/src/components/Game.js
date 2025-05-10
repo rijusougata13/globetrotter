@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Confetti from 'react-confetti';
-import { getRandomDestination, updateUserScore } from '../api';
+import { getRandomDestination, updateUserScore, createOrUpdateUser } from '../api';
 
 const GameContainer = styled.div`
   max-width: 800px;
@@ -63,7 +63,26 @@ const NextButton = styled.button`
   }
 `;
 
+const ChallengeButton = styled.button`
+  background: #25D366;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  margin: 20px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &:hover {
+    background: #128C7E;
+  }
+`;
+
 function Game({ username, score, setScore }) {
+  const [inviteCode, setInviteCode] = useState('');
   const [currentDestination, setCurrentDestination] = useState(null);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -84,7 +103,17 @@ function Game({ username, score, setScore }) {
 
   useEffect(() => {
     fetchNewDestination();
-  }, []);
+    // Get user's invite code
+    const fetchUserData = async () => {
+      try {
+        const user = await createOrUpdateUser(username);
+        setInviteCode(user.inviteCode);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUserData();
+  }, [username]);
 
   const handleAnswer = async (answer) => {
     setSelectedAnswer(answer);
@@ -162,9 +191,20 @@ function Game({ username, score, setScore }) {
       )}
 
       {selectedAnswer && (
-        <NextButton onClick={handleNext}>
-          Next Destination
-        </NextButton>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+          <NextButton onClick={handleNext}>
+            Next Destination
+          </NextButton>
+          <ChallengeButton
+            onClick={() => {
+              const text = `Hey! Can you beat my score on Globetrotter? I got ${score.correct} correct answers! Play here: `;
+              const url = `${window.location.origin}/challenge/${inviteCode}`;
+              window.open(`https://wa.me/?text=${encodeURIComponent(text + url)}`);
+            }}
+          >
+            🎮 Challenge Friends
+          </ChallengeButton>
+        </div>
       )}
     </GameContainer>
   );
