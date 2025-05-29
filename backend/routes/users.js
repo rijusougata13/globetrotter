@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
   logger.info('Creating or updating user', { username: req.body.username });
   try {
     let user = await User.findOne({ username: req.body.username });
-    
+
     if (user) {
       logger.info('Existing user found', { userId: user._id });
       res.json(user);

@@ -9,6 +9,7 @@ dotenv.config();
 
 const destinationsRouter = require('./routes/destinations');
 const usersRouter = require('./routes/users');
+const sessionRouter = require("./routes/sessions");
 
 const app = express();
 
@@ -35,6 +36,10 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.use('/api/destinations', destinationsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/sessions', sessionRouter);
+
+
+
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
